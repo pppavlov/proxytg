@@ -12,3 +12,17 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
+
+  mtg-proxy-2:
+    image: ${MTG_IMAGE:-nineseconds/mtg:2}
+    container_name: mtg-proxy-2
+    restart: unless-stopped
+    ports:
+      - "${MTG_HOST_PORT_2:-7444}:${MTG_BIND_PORT:-3128}/tcp"
+    volumes:
+      - ./config-2.toml:/config.toml:ro
+    healthcheck:
+      test: ["CMD", "/mtg", "access", "/config.toml"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
